@@ -1,83 +1,122 @@
-% copyright (c) 2019
-% Alexandre Reeberg de Mello - alexandre.reeberg@posgrad.ufsc.br
-FBTSVM
+#Incremental and Decremental Fuzzy Bounded Twin Support Vector Machine
+
+Stationary datasets, generated datsets, and algorithms. 
+
+## Algorithms
+* [FBTSVM]
+* [Incremental Support Vector Machine (ISVM)](https://github.com/diehl/Incremental-SVM-Learning-in-MATLAB)
+* [LASVM](https://leon.bottou.org/projects/lasvm)
+* [ORF](http://www.ymer.org/amir/research/online-multiclass-lpboost/) 
+* [ILVQ](https://github.com/vlosing/ILVQ)
+
+## Datasets
+### Stationary datasets:
+* [Border]
+* [Overlap]
+* [Letter Recognition](https://archive.ics.uci.edu/ml/datasets/Letter+Recognition)
+* [Outdoor]
+* [Coil]
+* [DNA](https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/multiclass.html#dna)
+* [USPS](https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/multiclass.html#usps)
+* [ISOLET](https://archive.ics.uci.edu/ml/datasets/ISOLET)
+* [Gisette](https://archive.ics.uci.edu/ml/datasets/Gisette)
+* [SUSY](http://archive.ics.uci.edu/ml/datasets/SUSY)
+* [MNIST]
+* [WESAD](https://ubicomp.eti.uni-siegen.de/home/datasets/icmi18/)
+
+### Generated datasets with MOA
+* [MOA](https://moa.cms.waikato.ac.nz/)
+* [HYPER]
+* [LED]
+* [RBF]
+* [RTG]
+* [SEA]
+
+ 
 
 
-%%%%%%EXAMPLES
-Example 1 - binary classification, creates an initial model and increment it in the same function.
-Example 2 - binary classification, creates an initial model and increment it using different functions.
-Example 3 - binary classification, creates an initial model and increment it in the same function.
-Example 4 - multiclass classification, creates an initial model and increment it in the same function.
-Example 5 - multiclass classification, creates an initial model and increment it using different functions.
+## Getting Started
 
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-%%%%%%iFBTSVM parameters usage
-Parameter.CC = int value (eg. 8) %C1
-Parameter.CC2= int value (eg. 8)  %C3
-Parameter.CR = int value (eg. 2) %C2
-Parameter.CR2= int value (eg. 2)  %C4
-Parameter.eps= int value (eg. 0.0001)%epsilon to avoid inverse matrix calculation error
-Parameter.maxeva= int value (eg. 500) %maximum of function evaluations to each train/update the model
-Parameter.u= int value (eg.0.01) %fuzzy parameter
-Parameter.epsilon= int value (eg. 1e-10) %fuzzy epsilon
-Parameter.repetitions= int value (eg. 3) %number of occurrences to forget
-Parameter.phi= int value (eg. 0.001) %forgeting threshold
-Parameter.kernel_name= char (eg. 'rbf') %kernel_name
-Parameter.kernel_param= int value (eg. 0.2) %kernel parameter
-Parameter.feat_dimensionality= int value (eg. 5000) %feature's dimensionality
-Parameter.Napp= int value (eg. 6000) %Number of samples for the approximation
-Parameter.options= char or empty (eg. 'signals' or []) %option 
-Parameter.sliv= binary value (true or false) %to enable sliced variables 
-ini_size= int value (eg. 0.1) %Initial training size
-batch_size= float value (eg. 200 or 0.5); %int for absolute size or float to data percentage
+### Prerequisites
 
-%%%%%%SAVE AND LOAD
-To save and load a model, use the default Matlab functions 'save' and 'load' respectively.
-https://www.mathworks.com/help/matlab/ref/save.html
-https://www.mathworks.com/help/matlab/ref/load.html
+What things you need to install the software and how to install them
 
+```
+Give examples
+```
 
-%%%%%%KERNEL APPROXIMATION
-The kernel approximation method is refers to Fuxin Li, Catalin Ionescu and Cristian Sminchisescu. Random Fourier Approximations for Skewed Multiplicative Histogram Kernels. In Springer LNCS 6376. Proceedings of 32nd DAGM Symposium. More information can be found in the Randfeat_releasever folder.
+### Installing
 
-kernel_name : 'linear', 'rbf' (Gaussian), 'laplace' (Laplacian),'chi2' (Chi-square), 'chi2_skewed' (Skewed chi-square), 'intersection', (Histogram intersection), 'intersection_skewed' (Skewed intersection).
-kernel_param : parameter for the kernel
-dim : dimensionality of the features
-Napp : number of samples for the approximation
-options: options. Includes: 'sampling' or signals' 
-sampling for [Rahimi and Recht 2007] type for Monte Carlo sampling. 
-signals for [Vedaldi and Zisserman 2010] type of fixed interval sampling. 
+A step by step series of examples that tell you how to get a development env running
 
+Say what the step will be
 
-%%%%%%DATASETS
-Example 1 and 2
-Characteristics: Binary classification
-Training set: 6000 instances with 5000 attributes
-Test set: 1000 instances with 5000 attributes
-More details @https://archive.ics.uci.edu/ml/datasets/Gisette
-References: Johnson, B., Xie, Z., 2013. Classifying a high resolution image of an urban area using super-object information. ISPRS Journal of Photogrammetry and Remote Sensing, 83, 40-49. 
-Johnson, B., 2013. High resolution urban land cover classification using a competitive multi-scale object-based approach. Remote Sensing Letters, 4 (2), 131-140.
+```
+Give the example
+```
 
-Example 3
-Characteristics: Binary classification
-Training set: 1269 instances with 163 attributes
-Test set: 744 instances with 163
-More details @https://web.inf.ufpr.br/vri/databases/breast-cancer-histopathological-database-breakhis/
-References:Spanhol, F., Oliveira, L. S., Petitjean, C., Heutte, L., A Dataset for Breast Cancer Histopathological Image Classification, IEEE Transactions on Biomedical Engineering (TBME), 63(7):1455-1462, 2016.
-Mahotas, library to exctract characteristics with PFTAS.
-Coelho, L.P. 2013. Mahotas: Open source software for scriptable computer vision. Journal of Open Research Software 1(1):e3, DOI: http://dx.doi.org/10.5334/jors.ac
-Parameter Free Threshold Adjacency Statistics
-Coelho L.P. et al. (2010) Structured Literature Image Finder: Extracting Information from Text and Images in Biomedical Literature. In: Blaschke C., Shatkay H. (eds) Linking Literature, Information, and Knowledge for Biology. Lecture Notes in Computer Science, vol 6004. Springer, Berlin, Heidelberg
-Open Tracking
+And repeat
 
-Example 4 and 5
-Characteristics: Multiclass classification
-Training set: 4000 instances with 2 attributes
-Test set: 1000 instances with 2 attributes
-More details @https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/
+```
+until finished
+```
 
+End with an example of getting some data out of the system or using it for a little demo
 
+## Running the tests
 
+Explain how to run the automated tests for this system
 
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
 
 
