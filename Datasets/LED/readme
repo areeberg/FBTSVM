@@ -1,0 +1,14 @@
+Generated 1.000.000 instances with 1 instance random seed and 10% of noise
+
+10K file
+1-10000 training
+10001-end testing
+
+100K file
+1-100000 training
+100001-end testing
+
+1M file
+1-1000000 training
+1000001-end testing
+
