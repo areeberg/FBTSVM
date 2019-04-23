@@ -1,0 +1,20 @@
+instance random seed 1
+num classes 2
+num nominals 0
+num numerics 10
+num vals per nomina 5
+max tree depth 3
+first leaf level 3
+leaf fraction 0.15
+
+10K file
+1-10000 training
+10001-end testing
+
+100K file
+1-100000 training
+100001-end testing
+
+1M file
+1-1000000 training
+1000001-end testing
