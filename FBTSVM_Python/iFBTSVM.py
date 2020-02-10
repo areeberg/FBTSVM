@@ -1,5 +1,6 @@
 import pdb
 from sklearn.kernel_approximation import RBFSampler
+from sklearn.utils import shuffle
 import numpy as np
 import pandas as pd
 from sklearn.datasets import load_iris
@@ -7,12 +8,17 @@ import sys
 
 sys.path.append("/media/alexandre/57268F1949DB0319/MATLAB/FBTSVM/FBTSVM_Python/functions/")
 from approx_k import approx_kernel
+from create_modelDAG import create_model
 
 
+#DATA MUST BE A NUMPY ARRAY
 data_iris = load_iris()
-data_X = data_iris.data[:, :2]  # we only take the first two features. We could
-                      # avoid this ugly slicing by using a two-dim dataset
-data_Y = data_iris.target
+# data_X = data_iris.data[:, :2]  # we only take the first two features. We could
+#                       # avoid this ugly slicing by using a two-dim dataset
+# data_Y = data_iris.target
+
+#Shuffle data
+data_X,data_Y=shuffle(data_iris.data,data_iris.target)
 
 ## new set of parameters
 CC = 8 #C1=C3
@@ -30,7 +36,7 @@ sliv=True #True or False
 kernel_type='ACHI2' #AdditiveChi2Sampler
 kernel_type='Nystroem' #Nystroem
 kernel_type='SCHI2'#SkewedChi2Sampler
-
+kernel_type='RBF' #Random Kitchen Sinks
 
 ## Define the approximate Kernel specs----------------
 # RBF - https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.RBFSampler.html#sklearn.kernel_approximation.RBFSampler
@@ -39,29 +45,48 @@ n_components=20
 gamma=1
 random_state=1
 kernel_structure={'kernel_type':[kernel_type],'gamma':[gamma],'random_state':[random_state]}
-#-----------------------------------------------------
-kernel_type='ACHI2' #Random Kitchen Sinks
-n_components=20
-gamma=1
-random_state=1
-kernel_structure={'kernel_type':[kernel_type],'gamma':[gamma],'random_state':[random_state]}
+# #-----------------------------------------------------
+# kernel_type='ACHI2' #Additive Chi Squared Kernel - https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.AdditiveChi2Sampler.html#sklearn.kernel_approximation.AdditiveChi2Sampler
+# sample_steps=2
+# sample_interval=None
+# random_state=1
+# kernel_structure={'kernel_type':[kernel_type],'sample_steps':[sample_steps],'sample_interval':[sample_interval]}
+#
+# #-----------------------------------------------------
+# kernel_type='SCHI2' #Skewed chi-squared Kernel - https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.SkewedChi2Sampler.html#sklearn.kernel_approximation.SkewedChi2Sampler
+# skewdness=0.5
+# n_components=0
+# random_state=1
+# kernel_structure={'kernel_type':[kernel_type],'skewdness':[skewdness],'n_components':[n_components],'random_state':[random_state]}
+#
+#
+# #-----------------------------------------------------
+# kernel_type='Nystroem' #Additive Chi Squared Kernel - https://scikit-learn.org/stable/modules/generated/sklearn.kernel_approximation.AdditiveChi2Sampler.html#sklearn.kernel_approximation.AdditiveChi2Sampler
+# n_components=20
+# gamma=1
+# random_state=1
+# coef0=None
+# degree=None
+# kernel_params=None
+# n_components=10
+# random_state=None
+# #when execute the Nystroem, use the rbf at the kernel
+#kernel_structure={'kernel_type':[kernel_type],'sample_steps':[sample_steps],'sample_interval':[sample_interval]}
+kernel_structure=pd.DataFrame(kernel_structure)
 
+
+#Calculate the approximate kernel, RBF as example in this case
+data_xk=approx_kernel(kernel_structure,data_X,data_Y)
 
 ##  Create a Pandas structure to store the paremeters
 #dataframe test
-data = {'CC':[CC],'CC2':[CC2],'CR':[CR],'CR2':[CR2],'eps':[eps],'maxeva':[maxeva],'u':[u],'repetitions':[repetitions],'phi':[phi],'sliv':[sliv]}
-
-dataframe = pd.DataFrame(data)
-dataframe=dataframe.append(kernel_structure,ignore_index=True)
+parameters = {'CC':[CC],'CC2':[CC2],'CR':[CR],'CR2':[CR2],'eps':[eps],'maxeva':[maxeva],'u':[u],'repetitions':[repetitions],'phi':[phi],'sliv':[sliv]}
+parameters = pd.DataFrame(parameters)
+pdb.set_trace()
+model=create_model(parameters,data_X,data_Y)
+#dataframe=dataframe.append(kernel_structure,ignore_index=True)
 pdb.set_trace()
 
 #access elements from df
 #print(dataframe.iloc[0].loc['CC'])
 #print(dataframe.iloc[1].loc['kernel_type'])
-
-
-## TODO:  Test the kernel approximation with RBFSamples
-pdb.set_trace()
-data_xk=approx_kernel(dataframe,data_X,data_Y)
-pdb.set_trace()
-print("update from another pc")
