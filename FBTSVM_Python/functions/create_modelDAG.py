@@ -37,8 +37,20 @@ def create_model(parameters,data_x,data_y):
             #pdb.set_trace()
             X=np.concatenate((Xp,Xn))
             L=np.concatenate((Lp,Ln))
-            #pdb.set_trace()
+            #The fuzzy function can be improved
             sp,sn,NXpv,NXnv=fuzzy_membership(Xp,Xn,parameters);
+            #XP_one and XN_one variables
+            XP_one=np.append(Xp, np.ones((len(Xn), 1)), axis=1)
+            XN_one=np.append(Xn, np.ones((len(Xn),1)),axis=1)
+            pdb.set_trace()
+
+
+            CCp=parameters.iloc[0].loc['CC']*sn
+            CCn=parameters.iloc[0].loc['CC2']*sp
+            pdb.set_trace()
+
+            #Implement here the main function (calc)
+
             pdb.set_trace()
 
 
