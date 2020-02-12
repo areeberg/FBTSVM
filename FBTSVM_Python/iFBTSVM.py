@@ -82,10 +82,9 @@ data_xk=approx_kernel(kernel_structure,data_X,data_Y)
 #dataframe test
 parameters = {'CC':[CC],'CC2':[CC2],'CR':[CR],'CR2':[CR2],'eps':[eps],'maxeva':[maxeva],'u':[u],'repetitions':[repetitions],'phi':[phi],'sliv':[sliv]}
 parameters = pd.DataFrame(parameters)
-pdb.set_trace()
 model=create_model(parameters,data_X,data_Y)
-#dataframe=dataframe.append(kernel_structure,ignore_index=True)
 pdb.set_trace()
+#dataframe=dataframe.append(kernel_structure,ignore_index=True)
 
 #access elements from df
 #print(dataframe.iloc[0].loc['CC'])

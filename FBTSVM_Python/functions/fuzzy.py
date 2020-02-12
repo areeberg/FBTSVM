@@ -10,7 +10,6 @@ def fuzzy_membership(Xp,Xn,parameters):
     print("Approx kernel")
     u=parameters.iloc[0].loc['u']
     epsilon=parameters.iloc[0].loc['eps']
-    pdb.set_trace()
     sizeXp=len(Xp)
     sizeXn=len(Xn)
 
@@ -46,6 +45,8 @@ def fuzzy_membership(Xp,Xn,parameters):
     scaler = preprocessing.MinMaxScaler(feature_range=(epsilon, 1))
     sn=np.expand_dims(sn,axis=1)
 
+
+    #The fit transform can be upgraded to consider the min and max from all dataset instead of each incremental iteration - idk if this action improve the classifier, however, worth the try
     sp=scaler.fit_transform(sp)
     sn=scaler.fit_transform(sn)
 
