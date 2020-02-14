@@ -53,9 +53,12 @@ def create_model(parameters,data_x,data_y):
             CR2=parameters.iloc[0].loc['CR2'] #for the positives
             CR=parameters.iloc[0].loc['CR'] #for the negatives
             alpha,vp,iter,pgp=calc_train(XN_one,XP_one,CR2,CCn,parameters)
+            pdb.set_trace()
             beta,vn,iter2,pgn=calc_train(XP_one,XN_one,CR,CCp,parameters)
+            vn=-vn
 
             pdb.set_trace()
+            #todo save the structure (ftsvm_struct)
 
 
 
