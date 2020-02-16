@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 from sklearn.datasets import load_iris
 import sys
-
+import pdb
 sys.path.append("/media/alexandre/57268F1949DB0319/MATLAB/FBTSVM/FBTSVM_Python/functions/")
 from approx_k import approx_kernel
 from create_modelDAG import create_model
-
+from classify import classify
 
 #DATA MUST BE A NUMPY ARRAY
 data_iris = load_iris()
@@ -82,6 +82,8 @@ data_xk=approx_kernel(kernel_structure,data_X,data_Y)
 parameters = {'CC':[CC],'CC2':[CC2],'CR':[CR],'CR2':[CR2],'eps':[eps],'maxeva':[maxeva],'u':[u],'repetitions':[repetitions],'phi':[phi],'sliv':[sliv]}
 parameters = pd.DataFrame(parameters)
 model=create_model(parameters,data_X,data_Y)
+acc,outclass,fp,fn=classify(model,data_X,data_Y,parameters)
+
 pdb.set_trace()
 #dataframe=dataframe.append(kernel_structure,ignore_index=True)
 

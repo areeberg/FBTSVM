@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 
 def approx_kernel(kernel_structure,data_x,data_y):
-    print("Approx kernel")
+    #print("Approx kernel")
     #pdb.set_trace()
     if kernel_structure.iloc[0].loc['kernel_type']=='RBF':
         #pdb.set_trace()
