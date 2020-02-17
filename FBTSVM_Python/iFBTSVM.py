@@ -82,6 +82,7 @@ data_xk=approx_kernel(kernel_structure,data_X,data_Y)
 parameters = {'CC':[CC],'CC2':[CC2],'CR':[CR],'CR2':[CR2],'eps':[eps],'maxeva':[maxeva],'u':[u],'repetitions':[repetitions],'phi':[phi],'sliv':[sliv]}
 parameters = pd.DataFrame(parameters)
 model=create_model(parameters,data_X,data_Y)
+pdb.set_trace()
 acc,outclass,fp,fn=classify(model,data_X,data_Y,parameters)
 
 pdb.set_trace()

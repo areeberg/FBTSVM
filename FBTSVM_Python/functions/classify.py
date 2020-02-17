@@ -20,6 +20,10 @@ def classify(models,data_x,data_y,parameters):
     num_models=len(models)
     pdb.set_trace()
 
+#model 0 -> 0 - 1
+#model 1 -> 0 - 2
+#model 2 -> 1 - 2
+
     for row in data_x:
         for mod in models:
             pdb.set_trace()
