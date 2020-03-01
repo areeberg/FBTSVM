@@ -11,15 +11,24 @@ from fuzzy import fuzzy_membership
 from calc import calc_train
 from aux_functions import data_structure
 
-def create_model(parameters,data_x,data_y):
-    #print("Creating initial model")
-    #get the classes
+def update_model(parameters,data_x,data_y,batch_size):
+    #Implement to use the appox kernel function
+
+    #The Batch size is a int that represent the number of instances
+
+    pdb.set_trace()
+
+    data_size=len(data_y)
+
+    for i in range(data_size):
+        print("update model")
+
     classes=np.unique(data_y)
     #get the number of classes
     num_classes=len(classes)
     fbtsvm_struct=[]
 
-    #We can run this loop in paralel
+    #Select a class
 
     for currentclass in classes:
         #print("loop over two classes only for the DAG algorithm")

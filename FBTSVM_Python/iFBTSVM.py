@@ -9,7 +9,8 @@ sys.path.append("/media/alexandre/57268F1949DB0319/MATLAB/FBTSVM/FBTSVM_Python/f
 from approx_k import approx_kernel
 from create_modelDAG import create_model
 from classify import classify
-
+from update_model import update_model
+from sklearn.model_selection import train_test_split
 #DATA MUST BE A NUMPY ARRAY
 data_iris = load_iris()
 # data_X = data_iris.data[:, :2]  # we only take the first two features. We could
@@ -18,6 +19,11 @@ data_iris = load_iris()
 
 #Shuffle data
 data_X,data_Y=shuffle(data_iris.data,data_iris.target)
+data1_X=data_X[1:int(len(data_X)/2),:]
+data1_Y=data_Y[1:int(len(data_Y)/2)]
+
+data2_X=data_X[int(len(data_X)/2)+1:int(len(data_X)),:]
+data2_Y=data_Y[int(len(data_Y)/2)+1:int(len(data_Y))]
 
 ## new set of parameters
 CC = 8 #C1=C3
@@ -81,9 +87,12 @@ data_xk=approx_kernel(kernel_structure,data_X,data_Y)
 #dataframe test
 parameters = {'CC':[CC],'CC2':[CC2],'CR':[CR],'CR2':[CR2],'eps':[eps],'maxeva':[maxeva],'u':[u],'repetitions':[repetitions],'phi':[phi],'sliv':[sliv]}
 parameters = pd.DataFrame(parameters)
-model=create_model(parameters,data_X,data_Y)
-pdb.set_trace()
-acc,outclass,fp,fn,answers=classify(model,data_X,data_Y,parameters)
+model=create_model(parameters,data1_X,data1_Y)
+#pdb.set_trace()
+acc,outclass,fp,fn,answers=classify(model,data2_X,data2_Y,parameters)
+
+batch_size=10
+model=update_model(parameters,data2_X,data2_Y,batch_size)
 
 pdb.set_trace()
 #dataframe=dataframe.append(kernel_structure,ignore_index=True)
