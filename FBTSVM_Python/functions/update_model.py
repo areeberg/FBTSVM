@@ -10,18 +10,38 @@ from approx_k import approx_kernel
 from fuzzy import fuzzy_membership
 from calc import calc_train
 from aux_functions import data_structure
+import math
 
-def update_model(parameters,data_x,data_y,batch_size):
+
+
+def inc_model(parameters,traindata,trainlabel):
+    print("D")
+
+
+def update_model(parameters,data_x,data_y,batch_size,model):
     #Implement to use the appox kernel function
 
     #The Batch size is a int that represent the number of instances
 
-    pdb.set_trace()
-
     data_size=len(data_y)
+    integertest=batch_size==math.floor(batch_size)
+
+    if integertest==True:
+        bats=batch_size
+    else:
+        bats=batch_size*data_size
+        bats=math.floor(bats)
+
+    p=0
 
     for i in range(data_size):
+        traindata1=data_x[p:p+bats,:]
+        trainlabel1=data_y[p:p+bats]
+        pdb.set_trace()
+        #TODO WORK ON THE INC_MODEL FUNCTION
+        fbtsvm_structu,datau,labelu=inc_model(parameters,traindata1,t trainlabel1,model)
         print("update model")
+
 
     classes=np.unique(data_y)
     #get the number of classes

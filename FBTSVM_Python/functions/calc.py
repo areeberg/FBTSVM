@@ -92,3 +92,4 @@ def calc_train(H,G,constantC,CCx,parameters):
     #pdb.set_trace()
 
     return alpha,v,num_iteration,pg1
+    
