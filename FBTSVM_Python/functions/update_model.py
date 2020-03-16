@@ -12,10 +12,87 @@ from calc import calc_train
 from aux_functions import data_structure
 import math
 
+#model 0 -> 0 - 1
+#model 1 -> 0 - 2
+#model 2 -> 1 - 2
 
 
-def inc_model(parameters,traindata,trainlabel):
+#Initial data filter - For this case consider only the positive values (currentclass)
+def createlinearSR(data,currentmodel,parameters):
+    print("SX")
+    ones=np.ones((len(data),1))
+    data=np.append(data,ones,axis=1)
+    grad=np.matmul(-data,currentmodel.vp) -1
+    bigger_grad=grad>=max(currentmodel.pgp)
+    smaller_grad=grad<=min(currentmodel.pgp)
+    bs_grad=np.any([bigger_grad,smaller_grad],axis=0)
+    index=np.argwhere(bs_grad==True)
+    index=np.delete(index,1,1)
+    data=np.delete(data,index,axis=0)
+
+    return data
+
+
+
+def inc_model(parameters,traindata,trainlabel,model):
     print("D")
+    #separate the data into classes (data and label)
+    classes=np.unique(trainlabel)
+    num_classes=len(classes)
+    num_models=len(model)
+    AA=np.empty((len(model),len(model)))
+    AA[:]=np.nan
+    i=0
+    for mod in model:
+        currentclass=mod.currentclass
+        ocl=mod.ocl
+        #pdb.set_trace()
+        AA[currentclass][ocl]=i
+        i=i+1
+    pdb.set_trace()
+
+    for currentclass in classes:
+        #print("loop over two classes only for the DAG algorithm")
+        #Xp - all training data from one class
+        Xpi=np.where(trainlabel==currentclass) # indexes from data which are equal to the respective class
+        Xp=traindata[Xpi] # The data from the indexes above
+        lp=len(Xpi[0]) # the number of instances
+        Lp=np.ones(lp) #array of ones
+        #pdb.set_trace()
+        otherclasses=np.delete(classes,np.where(classes==currentclass))
+        current_data=[]
+
+        # if len(model)!=0:
+        #     for mod in model:
+        #         cl_pos=mod.currentclass
+        #         #pdb.set_trace()
+        #         if mod.ocl==currentclass & currentclass>mod.currentclass:
+        #             otherclasses=np.delete(otherclasses,np.where(otherclasses==mod.currentclass))
+                    #pdb.set_trace()
+
+
+        #check if the structure already exists
+        #print(currentclass)
+        #pdb.set_trace()
+        if len(otherclasses)>0:
+
+            for ocl in otherclasses:
+                #send the data Xp and the respective models (currentclass and ocl), and the positive or negatives
+                #S{ve(1),ve(2)}=createlinearSR(trainp,ftsvm_struct(ve(1),ve(2)),'positive');
+
+                mod_pos=AA[currentclass][ocl]
+                mod=model[int(mod_pos)]
+                filtered_data=createlinearSR(Xp,mod,parameters) #Xp=data from currentclass
+                current_data.append(filtered_data)
+                #filtdata{cl}=unique(v,'rows');
+
+
+
+
+                pdb.set_trace()
+                print("aqui")
+
+    pdb.set_trace()
 
 
 def update_model(parameters,data_x,data_y,batch_size,model):
@@ -37,9 +114,9 @@ def update_model(parameters,data_x,data_y,batch_size,model):
     for i in range(data_size):
         traindata1=data_x[p:p+bats,:]
         trainlabel1=data_y[p:p+bats]
-        pdb.set_trace()
+        #pdb.set_trace()
         #TODO WORK ON THE INC_MODEL FUNCTION
-        fbtsvm_structu,datau,labelu=inc_model(parameters,traindata1,t trainlabel1,model)
+        fbtsvm_struct,datau,labelu=inc_model(parameters,traindata1,trainlabel1,model)
         print("update model")
 
 
