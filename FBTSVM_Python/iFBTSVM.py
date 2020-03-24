@@ -92,7 +92,8 @@ model=create_model(parameters,data1_X,data1_Y)
 acc,outclass,fp,fn,answers=classify(model,data2_X,data2_Y,parameters)
 
 batch_size=10
-model_updated=update_model(parameters,data2_X,data2_Y,batch_size,model)
+model_updated=update_model(parameters,data2_X,data2_Y,batch_size,model,data1_X,data1_Y)
+acc,outclass,fp,fn,answers=classify(model,data2_X,data2_Y,parameters)
 
 pdb.set_trace()
 #dataframe=dataframe.append(kernel_structure,ignore_index=True)
