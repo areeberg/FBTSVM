@@ -34,7 +34,7 @@ eps=0.0000001 #epsilon to avoid inverse matrix calculation error
 maxeva=500 #maximum of function evaluations to each train/update the model
 u=0.01 #fuzzy parameter
 epsilon=1e-10# fuzzy epsilon
-repetitions=5 #Must be an int
+repetitions=3 #Must be an int
 phi=0.00001
 sliv=True #True or False
 
@@ -91,7 +91,7 @@ model=create_model(parameters,data1_X,data1_Y)
 #pdb.set_trace()
 acc,outclass,fp,fn,answers=classify(model,data2_X,data2_Y,parameters)
 
-batch_size=10
+batch_size=20
 model_updated=update_model(parameters,data2_X,data2_Y,batch_size,model,data1_X,data1_Y)
 acc,outclass,fp,fn,answers=classify(model,data2_X,data2_Y,parameters)
 

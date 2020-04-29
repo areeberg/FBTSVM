@@ -12,6 +12,7 @@ from calc import calc_train
 from aux_functions import data_structure
 import math
 from itertools import chain
+from forget import forgetn
 
 
 #model 0 -> 0 - 1
@@ -93,8 +94,8 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
     num_classes=len(classes)
 
     for currentclass in classes:
-        pdb.set_trace()
-        print("loop2")
+        #pdb.set_trace()
+        #print("loop2")
 
         #print("loop over two classes only for the DAG algorithm")
         #Xp - all training data from one class
@@ -113,7 +114,7 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
 
         if len(otherclasses)>0:
             for ocl in otherclasses:
-                pdb.set_trace()
+                #pdb.set_trace()
                 Lpi=np.where(label==ocl) # indexes from data which are equal another class (negative from currentclass)
                 Xn=data[Lpi] # The data from the indexes above
                 ln=len(Lpi[0]) # the number of instances
@@ -146,11 +147,11 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
                 #pdb.set_trace()
                 model[int(mod_pos)]=new_structure
                 #pdb.set_trace()]
-                printstring="currentclass-> "+str(currentclass)
-                printstrin2="otherclass ->" +str(ocl)
+                #printstring="currentclass-> "+str(currentclass)
+                #printstrin2="otherclass ->" +str(ocl)
 
-                print(printstring)
-                print(printstrin2)
+                #print(printstring)
+                #print(printstrin2)
 
 
     return model,trdata,trlabel
@@ -172,13 +173,19 @@ def update_model(parameters,data_x,data_y,batch_size,model,data,label):
         bats=math.floor(bats)
 
     p=0
+    score=[]
+
 
     for i in range(data_size):
+        print(p+bats)
         traindata1=data_x[p:p+bats,:]
         trainlabel1=data_y[p:p+bats]
-        #pdb.set_trace()
-        #TODO WORK ON THE INC_MODEL FUNCTION
-        fbtsvm_struct,datau,labelu=inc_model(parameters,traindata1,trainlabel1,model,data,label)
+
+        model,data,label=inc_model(parameters,traindata1,trainlabel1,model,data,label)
+        #implement forgetting algorithm
+        model,score,data,label=forgetn(parameters,data,label,model,score)
+        pdb.set_trace()
+
         print("update model")
 
-    return fbtsvm_struct
+    return model
