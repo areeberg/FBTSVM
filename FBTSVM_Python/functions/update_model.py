@@ -184,8 +184,9 @@ def update_model(parameters,data_x,data_y,batch_size,model,data,label):
         model,data,label=inc_model(parameters,traindata1,trainlabel1,model,data,label)
         #implement forgetting algorithm
         model,score,data,label=forgetn(parameters,data,label,model,score)
-        pdb.set_trace()
+        #pdb.set_trace()
 
         print("update model")
+        
 
     return model
