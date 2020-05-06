@@ -47,8 +47,7 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
     for mod in model:
         currentclass=mod.currentclass
         ocl=mod.ocl
-        #pdb.set_trace()
-        AA[currentclass][ocl]=i
+        AA[int(currentclass)][int(ocl)]=int(i)
         i=i+1
 
     for currentclass in classes:
@@ -59,7 +58,6 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
         Xp=traindata[Xpi] # The data from the indexes above
         lp=len(Xpi[0]) # the number of instances
         Lp=np.ones(lp) #array of ones
-        #pdb.set_trace()
         otherclasses=np.delete(classes,np.where(classes==currentclass))
         current_data=[]
         #unique_rows=[]
@@ -78,12 +76,23 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
                     filtered_data=createlinearSR(Xp,mod,parameters) #Xp=data from currentclass
                     current_data.append(filtered_data)
 
-        if isinstance(current_data,list)== False:
+
+        #if isinstance(current_data,list)== True:
+        #print(current_data)
+        if not current_data:
+            print("current_data empty")
+        else:
             current_data = list(chain.from_iterable(current_data))
             unique_rows=np.asarray(current_data)
             unique_rows = np.unique(unique_rows, axis=0)
             unique_rows=np.squeeze(unique_rows)
-            unique_rows=unique_rows[:,:-1]
+            if len(unique_rows.shape)>1:
+                unique_rows=unique_rows[:,:-1]
+            else:
+                #pdb.set_trace()
+                unique_rows=[unique_rows[:-1]]
+
+
             data=np.concatenate((data,unique_rows),axis=0)
             lab=int(currentclass)*np.ones((len(unique_rows)))
             label=np.concatenate((label,lab))
@@ -94,32 +103,27 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
     num_classes=len(classes)
 
     for currentclass in classes:
-        #pdb.set_trace()
-        #print("loop2")
 
-        #print("loop over two classes only for the DAG algorithm")
-        #Xp - all training data from one class
         Xpi=np.where(label==currentclass) # indexes from data which are equal to the respective class
         Xp=data[Xpi] # The data from the indexes above
         lp=len(Xpi[0]) # the number of instances
         Lp=np.ones(lp) #array of ones
-        #pdb.set_trace()
         otherclasses=np.delete(classes,np.where(classes==currentclass))
 
         if len(model)!=0:
             for mod in model:
                 cl_pos=mod.currentclass
-                if mod.ocl==currentclass & currentclass>mod.currentclass:
+                #pdb.set_trace()
+                #ERRO AQUI
+                if mod.ocl==int(currentclass) & int(currentclass)>mod.currentclass:
                     otherclasses=np.delete(otherclasses,np.where(otherclasses==mod.currentclass))
 
         if len(otherclasses)>0:
             for ocl in otherclasses:
-                #pdb.set_trace()
                 Lpi=np.where(label==ocl) # indexes from data which are equal another class (negative from currentclass)
                 Xn=data[Lpi] # The data from the indexes above
                 ln=len(Lpi[0]) # the number of instances
                 Ln=-1*np.ones(ln) #array of ones
-                #pdb.set_trace()
                 X=np.concatenate((Xp,Xn))
                 L=np.concatenate((Lp,Ln))
                 #The fuzzy function can be improved
@@ -127,12 +131,10 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
 
 
                 #XP_one and XN_one variables
-                #pdb.set_trace()
                 XP_one=np.append(Xp, np.ones((len(Xp), 1)), axis=1)
                 XN_one=np.append(Xn, np.ones((len(Xn),1)),axis=1)
                 CCp=parameters.iloc[0].loc['CC']*sn
                 CCn=parameters.iloc[0].loc['CC2']*sp
-                #pdb.set_trace()
 
                 #Implement here the main function (calc)
                 CR2=parameters.iloc[0].loc['CR2'] #for the positives
@@ -141,21 +143,13 @@ def inc_model(parameters,traindata,trainlabel,model,data,label):
                 beta,vn,iter2,pgn=calc_train(XP_one,XN_one,CR,CCp,parameters)
                 vn=-vn
                 new_structure=data_structure(sp,sn,alpha,beta,vp,vn,NXpv,NXnv,pgp,pgn,currentclass,ocl,Xpi,Lpi)
-                #pdb.set_trace()
                 #update in the right position
-                mod_pos=AA[currentclass][ocl]
                 #pdb.set_trace()
+                mod_pos=AA[int(currentclass)][int(ocl)]
                 model[int(mod_pos)]=new_structure
-                #pdb.set_trace()]
-                #printstring="currentclass-> "+str(currentclass)
-                #printstrin2="otherclass ->" +str(ocl)
-
-                #print(printstring)
-                #print(printstrin2)
-
 
     return model,trdata,trlabel
-        #filtdata{cl}=unique(v,'rows');
+
 
 
 def update_model(parameters,data_x,data_y,batch_size,model,data,label):
@@ -184,9 +178,8 @@ def update_model(parameters,data_x,data_y,batch_size,model,data,label):
         model,data,label=inc_model(parameters,traindata1,trainlabel1,model,data,label)
         #implement forgetting algorithm
         model,score,data,label=forgetn(parameters,data,label,model,score)
-        #pdb.set_trace()
 
         print("update model")
-        
+
 
     return model

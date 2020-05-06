@@ -34,8 +34,8 @@ eps=0.0000001 #epsilon to avoid inverse matrix calculation error
 maxeva=500 #maximum of function evaluations to each train/update the model
 u=0.01 #fuzzy parameter
 epsilon=1e-10# fuzzy epsilon
-repetitions=3 #Must be an int
-phi=0.00001
+repetitions=5 #Must be an int
+phi=0.000000001
 sliv=True #True or False
 
 kernel_type='ACHI2' #AdditiveChi2Sampler
@@ -97,7 +97,3 @@ acc,outclass,fp,fn,answers=classify(model,data2_X,data2_Y,parameters)
 
 pdb.set_trace()
 #dataframe=dataframe.append(kernel_structure,ignore_index=True)
-
-#access elements from df
-#print(dataframe.iloc[0].loc['CC'])
-#print(dataframe.iloc[1].loc['kernel_type'])

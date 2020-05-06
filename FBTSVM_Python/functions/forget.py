@@ -31,7 +31,7 @@ def get_intersect(data,label,model,parameters):
         currentclass=mod.currentclass
         ocl=mod.ocl
         #pdb.set_trace()
-        AA[currentclass][ocl]=i
+        AA[int(currentclass)][int(ocl)]=int(i)
         i=i+1
     BB=AA
     Cinter= np.array([])
@@ -54,7 +54,7 @@ def get_intersect(data,label,model,parameters):
             for ocl in otherclasses:
                 #send the data Xp and the respective models (currentclass and ocl), and the positive or negatives
                 #S{ve(1),ve(2)}=createlinearSR(trainp,ftsvm_struct(ve(1),ve(2)),'positive');
-                mod_pos=AA[currentclass][ocl]
+                mod_pos=AA[int(currentclass)][int(ocl)]
                 if math.isnan(mod_pos)==True:
                     #print("NaN")
                     continue
@@ -66,9 +66,9 @@ def get_intersect(data,label,model,parameters):
                     #pdb.set_trace()
 
                     Cmatrix[aux_var,currentclass]=Cpos
-                    Fgt_mtx_index[aux_var][currentclass]=1
+                    Fgt_mtx_index[int(aux_var)][int(currentclass)]=1
                     Cmatrix[aux_var,ocl]=Cneg
-                    Fgt_mtx_index[aux_var][ocl]=1
+                    Fgt_mtx_index[int(aux_var)][int(ocl)]=1
                     #pdb.set_trace()
                     aux_var=aux_var+1
 
@@ -93,8 +93,18 @@ def get_intersect(data,label,model,parameters):
             return Inters, Inters_struct
 
         for val in values[1:]:
-            A=Cmatrix[val[0],inde]
+            #print('val0',val[0])
+            #print('inde',inde)
+            #print('X',X)
             #pdb.set_trace()
+            try:
+                A=Cmatrix[val[0],inde]
+            except KeyError:
+                return Inters, Inters_struct
+
+
+            #Try except on this KeyError: (1, 0)
+
             X=np.intersect1d(A, X)
             Inters_struct.append(X)
 
@@ -129,11 +139,14 @@ def forgetn(parameters,data,label,model,score):
         diff=np.setdiff1d(score[0],Inters)
         #pdb.set_trace()
         if len(diff)!=0:
-            pdb.set_trace()
             new_ones=np.ones(len(diff))
             new_score=np.array((diff,new_ones))
-            np.insert(score[0],new_score)
-            np.insert(score[1],new_ones)
+            new_score=np.unique(new_score)
+            #get only the unique elements
+            #pdb.set_trace()
+
+            np.append([score[0]],[new_score])
+            np.append([score[1]],[new_ones])
 
     if len(score)!=0:
         res = [idx for idx, val in enumerate(score[1]) if val >= rep]
@@ -144,7 +157,7 @@ def forgetn(parameters,data,label,model,score):
             currentclass=mod.currentclass
             ocl=mod.ocl
             #pdb.set_trace()
-            AA[currentclass][ocl]=i
+            AA[int(currentclass)][int(ocl)]=int(i)
             i=i+1
 
         if len(res)==0:
@@ -183,17 +196,18 @@ def forgetn(parameters,data,label,model,score):
                     for ocl in otherclasses:
                         #send the data Xp and the respective models (currentclass and ocl), and the positive or negatives
                         #S{ve(1),ve(2)}=createlinearSR(trainp,ftsvm_struct(ve(1),ve(2)),'positive');
-                        mod_pos=AA[currentclass][ocl]
+                        mod_pos=AA[int(currentclass)][int(ocl)]
                         if math.isnan(mod_pos)==True:
                             continue
                         else:
                             mod=model[int(mod_pos)]
-                            bb=Inters_struct[currentclass]
-                            cc=Inters_struct[ocl]
+                            bb=Inters_struct[int(currentclass)]
+                            cc=Inters_struct[int(ocl)]
                             res1=np.intersect1d(bb,mod.Xpi[0])
                             res2=np.intersect1d(cc,mod.Lpi[0])
                             Xpiu= np.delete(mod.Xpi[0],res1)
                             Lpiu= np.delete(mod.Lpi[0],res2)
+                            #pdb.set_trace()
 
 
                             alpu= np.delete(mod.alpha,bb)

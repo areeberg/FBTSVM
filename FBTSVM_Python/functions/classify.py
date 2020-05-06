@@ -27,7 +27,7 @@ def classify(models,data_x,data_y,parameters):
         currentclass=mod.currentclass
         ocl=mod.ocl
         #pdb.set_trace()
-        AA[currentclass][ocl]=i
+        AA[int(currentclass)][int(ocl)]=i
         i=i+1
         #pdb.set_trace()
 
